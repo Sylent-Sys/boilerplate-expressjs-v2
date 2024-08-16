@@ -1,7 +1,12 @@
 export class ErrorResponse extends Error {
   status: number;
   error: object[] | object;
-  constructor(name: string, status: number, message: string, error: object[] | object) {
+  constructor(
+    name: string,
+    status: number,
+    message: string,
+    error: object[] | object,
+  ) {
     super();
     this.name = name;
     this.status = status;

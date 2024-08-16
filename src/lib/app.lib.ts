@@ -74,7 +74,7 @@ export default class AppLib {
           callback(null, true);
         } else {
           callback(
-            new ErrorResponse(403, "Not allowed by CORS", {
+            new ErrorResponse("CORS", 403, "Not allowed by CORS", {
               msg: "Not allowed by CORS",
             }),
           );
