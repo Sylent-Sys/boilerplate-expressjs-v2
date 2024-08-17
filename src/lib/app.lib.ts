@@ -85,10 +85,9 @@ export default class AppLib {
       ...corsOptions,
     };
     this.express.use((req, res, next) => {
-      const isAllowedApiPath: boolean =
-        allowedApiPaths.find((path) => req.path.startsWith(path)) != undefined
-          ? true
-          : false;
+      const isAllowedApiPath: boolean = allowedApiPaths.some((path) =>
+        req.path.startsWith(path),
+      );
       if (isAllowedApiPath) {
         next();
       } else {
