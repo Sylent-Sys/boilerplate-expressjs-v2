@@ -89,7 +89,7 @@ export default class AppLib {
         req.path.startsWith(path),
       );
       if (isAllowedApiPath) {
-        next();
+        cors()(req, res, next);
       } else {
         cors(
           this.envUtil.getEnv("NODE_ENV") === "development"
