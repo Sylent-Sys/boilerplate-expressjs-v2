@@ -2,9 +2,6 @@ import { z } from "zod";
 
 export const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production"]).default("production"),
-  DATABASE_URL: z.string(),
-  SHADOW_DATABASE_URL: z.string().optional(),
-  JWT_SECRET: z.string(),
   APP_PORT: z.custom<number>((value) => {
     if (isNaN(Number(value))) {
       return { success: false, message: "APP_PORT must be a number" };
