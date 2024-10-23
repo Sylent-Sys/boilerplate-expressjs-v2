@@ -11,13 +11,9 @@ export const envSchema = z.object({
   FRONTEND_URL: z.string(),
   BACKEND_URL: z.string(),
   LOG: z.custom<boolean>((value) => {
-    if (value === "true" || value === "false") {
-      return { success: true, data: value === "true" };
-    }
-    return {
-      success: false,
-      message: "LOG must be a boolean 'true' or 'false'",
-    };
+    value = value.toLowerCase();
+    if (value === "true") return true;
+    return false;
   }),
 });
 export type env = z.infer<typeof envSchema>;
