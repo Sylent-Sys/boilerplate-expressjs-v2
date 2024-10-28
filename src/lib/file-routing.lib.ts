@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 import fileRoutingConfig from "@/config/file-routing.config.js";
 import type {
   ExpressLike,
@@ -6,6 +7,7 @@ import type {
   Options,
 } from "@/interface/file-routing.interface.js";
 import LocationUtil from "@/util/location.util.js";
+import chalk from "chalk";
 import express, { Router, type Handler, type RouterOptions } from "express";
 import { type ParsedPath } from "path";
 export default class FileRoutingLib {
@@ -128,11 +130,25 @@ export default class FileRoutingLib {
     }
     return this.prioritizeRoutes(routes);
   }
+  listRoutes(router: Router) {
+    console.log(chalk.bold("METHOD") + "\t\t" + chalk.bold("PATH"));
+    router.stack.forEach((layer) => {
+      if (layer.route) {
+        const path = layer.route.path;
+        const methods = Object.keys((layer.route as any).methods)
+          .join(", ")
+          .toUpperCase();
+        console.log(chalk.blue(methods) + "\t\t" + chalk.green(path));
+      }
+    });
+  }
   async loadRoutesAsMiddleware(
     options: Options & { routerOptions?: RouterOptions } = {},
   ) {
     const routerOptions = options?.routerOptions || {};
-    return await this.loadRoutes(Router(routerOptions), options);
+    const router = await this.loadRoutes(Router(routerOptions), options);
+    this.listRoutes(router);
+    return router;
   }
   async loadRoutes<T extends ExpressLike = ExpressLike>(
     app: T,
