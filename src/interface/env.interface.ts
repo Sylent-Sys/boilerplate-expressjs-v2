@@ -10,9 +10,9 @@ export const envSchema = z.object({
   }),
   FRONTEND_URL: z.string(),
   BACKEND_URL: z.string(),
-  LOG: z.custom<boolean>((value) => {
+  LOG: z.custom<"TRUE" | "FALSE">((value) => {
     value = value.toLowerCase();
-    if (value === "true") return true;
+    if (value === "true" || value === "false") return true;
     return false;
   }),
 });
