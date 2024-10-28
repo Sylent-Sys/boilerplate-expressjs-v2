@@ -5,6 +5,7 @@ import errorMiddleware from "@/middleware/error.middleware.js";
 import { ErrorResponse } from "@/interface/response.interface.js";
 import EnvUtil from "@/util/env.util.js";
 import winston, { format, Logger } from "winston";
+import chalk from "chalk";
 export default class AppLib {
   private express: Express;
   private envUtil: EnvUtil;
@@ -26,7 +27,7 @@ export default class AppLib {
     this.initMiddleware([express.json(), ...middleware]);
   }
   private initLogger() {
-    const isLog: boolean = this.envUtil.getEnv("LOG") as boolean;
+    const isLog: boolean = this.envUtil.getEnv("LOG") === "TRUE";
     if (isLog) {
       const { combine, timestamp, printf, colorize, align } = format;
       const logger: Logger = winston.createLogger({
@@ -109,7 +110,7 @@ export default class AppLib {
     this.express.use("/", await new FileRoutingLib().loadRoutesAsMiddleware());
     this.express.use(errorMiddleware());
     this.express.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+      console.log(chalk.green(`Server is running on port ${port}`));
     });
   }
 }
